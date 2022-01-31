@@ -1,71 +1,66 @@
 """
-#######################################################################################
-#  02/01/2022 15:39                                                                   #
-#  Ramón Panadero Dobarro                                                             #
-#  DAW_D 1º                                                                           #
-#  Busca minas V0.0 alpha                                                             #
-#######################################################################################
+Ramon panadero dobarro
+DAW 1
+31/01/2022
+Busca minas V1.0
 """
+
 import random
 
 
 def data_input():
-    DATOS_CORRECTOS = False
-    data = 0
+    # funcion que recoje los datos introduciodos por el ususario
+    return int(input())
+
+
+def tablero_valdio(eje_x, eje_y):
+    # FunciÃ³n que comprueba que el tablero es valido
     MINIMO = 3
     MAXIMO = 10
-    data = int(input())
-
-    return data
+    if eje_x < MINIMO or eje_y < MINIMO:
+        return False
+    elif eje_x > MAXIMO or eje_y > MAXIMO:
+        return False
+    elif eje_x < MINIMO or eje_y > MAXIMO:
+        return False
+    elif eje_x > MAXIMO or eje_y < MINIMO:
+        return False
+    else:
+        return True
 
 
 def generar_tablero():
+    # FunciÃ³n que genera el tablero y comprueba que sea vÃ¡lido
+    VEDADERO_FALSO = False
     TABLERO_CORRECTO = False
-    MINIMO = 3
-    MAXIMO = 10
+
     eje_x = 0
     eje_y = 0
-    contador = 0
-    contador1 = 0
     tablero = []
     print("Introduce el ancho: ", end="")
     eje_x = data_input()
     print("Introduce el alto: ", end="")
     eje_y = data_input()
-    while TABLERO_CORRECTO == False:
-        if eje_x < MINIMO or eje_y < MINIMO:
+    # Parte que compruba si los datos son validos
+    while TABLERO_CORRECTO == VEDADERO_FALSO:
+        TABLERO_CORRECTO = tablero_valdio(eje_x, eje_y)
+        if TABLERO_CORRECTO == VEDADERO_FALSO:
+            print("No son datos correctos ")
             print("Introduce el ancho: ", end="")
             eje_x = data_input()
             print("Introduce el alto: ", end="")
             eje_y = data_input()
-        elif eje_x > MAXIMO or eje_y > MAXIMO:
-            print("Introduce el ancho: ", end="")
-            eje_x = data_input()
-            print("Introduce el alto: ", end="")
-            eje_y = data_input()
-        elif eje_x < MINIMO or eje_y > MAXIMO:
-            print("Introduce el ancho: ", end="")
-            eje_x = data_input()
-            print("Introduce el alto: ", end="")
-            eje_y = data_input()
-        elif eje_x > MAXIMO or eje_y < MINIMO:
-            print("Introduce el ancho: ", end="")
-            eje_x = data_input()
-            print("Introduce el alto: ", end="")
-            eje_y = data_input()
-        else:
-            TABLERO_CORRECTO = True
 
-    print(f"{eje_x}, {eje_y}") # Borrar
     tablero = [["x " for x in range(eje_x)] for y in range(eje_y)]
 
     return tablero, eje_x, eje_y
 
 
 def mostar_tablero(tablero_puro, eje_x, eje_y):
+    # Funcion que pinta el tablero correctamente
     print(" ", end=" ")
-    for _ in range(eje_x):
-        print(_ + 1, end=" ")
+    for contador0 in range(eje_x):
+        print(contador0 + 1, end=" ")
     print("")
     for contador in range(eje_y):
         print(contador + 1, end=" ")
@@ -78,10 +73,10 @@ def mostar_tablero(tablero_puro, eje_x, eje_y):
 
 
 def colocar_minas(minas, eje_x, eje_y, tablero_con_minas):
+    # FunciÃ³n que coloca la mina en el tablero
     mina_grafica = "m "
     random_x = 0
     random_y = 0
-    print("\n" * 20)
     random_x = random.randrange(eje_x - 1)
     random_y = random.randrange(eje_y - 1)
     for _ in range(minas):
@@ -98,6 +93,7 @@ def colocar_minas(minas, eje_x, eje_y, tablero_con_minas):
 
 
 def generar_minas(casillas):
+    # Funcion que calcula la cantidad de minas para el juego
     porcentaje_de_minas = 0.10
 
     catidad_de_minas = 0
@@ -105,7 +101,8 @@ def generar_minas(casillas):
     return catidad_de_minas
 
 
-def comprobar_datos( tablero_con_minas, eje_x, eje_y, vida, minas):
+def comprobar_datos(tablero_con_minas, eje_x, eje_y, vida, minas):
+    # Funcion que comprueba si las cordenadas metidas por el juador son correctas
     dato_x = 0
     dato_y = 0
     mina = "m "
@@ -130,10 +127,14 @@ def comprobar_datos( tablero_con_minas, eje_x, eje_y, vida, minas):
 
 
 def jugar_buscaminas():
+    # FunciÃ³n que inicializa el juego
+    eje_x = 0
+    eje_y = 0
     casillas = 0
     vida = 0
-    verdadero_faslo = True
+    minas = 0
     tablero = []
+    tablero_con_minas = []
 
     tablero, eje_x, eje_y = generar_tablero()
     casillas = eje_x * eje_y
